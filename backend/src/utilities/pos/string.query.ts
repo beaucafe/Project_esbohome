@@ -1,0 +1,84 @@
+const date = new Date()
+let day = date.getDate()
+let month = date.getMonth() < 12 ? date.getMonth() + 1 : 1
+let year = date.getFullYear()
+
+interface tableData {
+  Datetime: Date
+  Tablename: String
+}
+
+const dailyTablePos = `SELECT  
+        POSC_FM_DATE as Datetime ,POSC_TABLE as Tablename
+        FROM POSCONTROL 
+        where POSC_FM_DATE= '${year}-${month}-${day}'
+        order by posc_key desc`
+
+const salesSummary = `SELECT 
+ICDEPT.ICDEPT_CODE ,
+ICDEPT.ICDEPT_THAIDESC ,
+DOCTYPE.DT_PROPERTIES,
+SUM(SKUMOVE.SKM_QTY)  SKM_QTY,
+SUM(SKUMOVE.SKM_Q_FREE)  SKM_Q_FREE,
+SUM(SKUMOVE.SKM_COST)  SKM_COST,
+SUM(SKUMOVE.SKM_SELL)  SKM_SELL,
+SUM(SKUMOVE.SKM_VAT)  SKM_VAT
+FROM
+ SKUMOVE JOIN SKUMASTER ON SKUMOVE.SKM_SKU = SKUMASTER.SKU_KEY
+JOIN UOFQTY ON SKUMASTER.SKU_S_UTQ = UOFQTY.UTQ_KEY
+JOIN ICCAT ON SKUMASTER.SKU_ICCAT = ICCAT.ICCAT_KEY
+JOIN BRAND ON SKUMASTER.SKU_BRN = BRAND.BRN_KEY
+JOIN ICDEPT ON SKUMASTER.SKU_ICDEPT = ICDEPT.ICDEPT_KEY 
+JOIN SKUALT ON SKUMASTER.SKU_SKUALT = SKUALT.SKUALT_KEY
+JOIN WARELOCATION ON SKUMOVE.SKM_WL = WARELOCATION.WL_KEY
+JOIN WAREHOUSE ON WARELOCATION.WL_WH = WAREHOUSE.WH_KEY
+JOIN DOCINFO ON  SKUMOVE.SKM_DI = DOCINFO.DI_KEY
+JOIN DOCTYPE ON DOCINFO.DI_DT = DOCTYPE.DT_KEY  
+JOIN ARDETAIL ON DOCINFO.DI_KEY = ARDETAIL.ARD_DI
+JOIN ARFILE ON ARDETAIL.ARD_AR = ARFILE.AR_KEY 
+JOIN ARCAT ON ARFILE.AR_ARCAT = ARCAT.ARCAT_KEY 
+JOIN ARGROUP ON ARFILE.AR_ARG = ARGROUP.ARG_KEY
+JOIN SLDETAIL ON DOCINFO.DI_KEY = SLDETAIL.SLD_DI
+JOIN SALESMAN ON SLDETAIL.SLD_SLMN = SALESMAN.SLMN_KEY
+JOIN TRANSTKH ON DOCINFO.DI_KEY = TRANSTKH.TRH_DI
+JOIN DEPTTAB ON TRANSTKH.TRH_DEPT = DEPTTAB.DEPT_KEY 
+JOIN BRANCH ON TRANSTKH.TRH_BR = BRANCH.BR_KEY
+JOIN PRJTAB ON TRANSTKH.TRH_PRJ = PRJTAB.PRJ_KEY
+WHERE
+ DOCINFO.DI_ACTIVE = 0 AND
+(DOCTYPE.DT_PROPERTIES = 307 OR 
+DOCTYPE.DT_PROPERTIES = 302 OR 
+DOCTYPE.DT_PROPERTIES = 308 OR 
+DOCTYPE.DT_PROPERTIES=337 ) AND
+DOCINFO.DI_DATE between '${year}-${month}-${day}' and '${year}-${month}-${day}'
+
+GROUP  BY     
+ICDEPT.ICDEPT_CODE, 
+ICDEPT.ICDEPT_THAIDESC,
+DOCTYPE.DT_PROPERTIES
+ORDER BY    
+ICDEPT_CODE
+`
+
+const dailySummary = (table: String) => {
+  return `SELECT sum(PSH_G_SV) as pre_tax , sum(PSH_G_VAT) as tax_amount, (sum([PSH_CHARGE])) as tax_total
+
+        FROM H${table} where psh_type='1' and psh_status = '0'`
+}
+
+const billCancel = (table: String) => {
+  return `SELECT PSS_KEY
+                ,PSS_PSH
+                ,PSS_VOIDS
+                FROM S${table}
+                where PSS_VOIDS != ''`
+}
+
+const billData = (table: String) => {
+  return `SELECT PSH_KEY as _id, PSH_NO as billNo, PSH_START as billStart, PSH_STOP as billStop,
+         PSH_MBCODE as mbCode, PSH_MBCARD as mbCard, PSH_TAX_INV as taxInv 
+        from H${table} 
+        where psh_type='1' order by PSH_KEY asc`
+}
+
+export { dailyTablePos, dailySummary, billCancel, billData }

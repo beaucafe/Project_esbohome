@@ -52,6 +52,9 @@ hint: its remote counterpart. Integrate the remote changes (e.g.
 hint: 'git pull ...') before pushing again.
 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 
+ISSUE 3
+    for gitlab change secure  setting > repositories > Protected branch 
+
 Isolution
 git push all master -f  , it's me worked.
 
