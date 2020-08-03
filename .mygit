@@ -18,16 +18,14 @@ code:
 
     # Re-register the remote as a push URL.
 code:
-    git remote set-url --add --push all https://github.com/beaucafe/Project_esbohome.git
 
-    # Add a push URL to a remote. This means that "git push" will also push to this git URL.
-code:    
-    git remote set-url --add --push all https://tharasupr@dev.azure.com/tharasupr/Project_esbohome/_git/Project_esbohome &&
-    git remote set-url --add --push all git@gitlab.com:beaucafe/project_esbohome.git
+git remote set-url --add --push all https://github.com/beaucafe/Project_esbohome.git &&  
+git remote set-url --add --push all https://tharasupr@dev.azure.com/tharasupr/Project_esbohome/_git/Project_esbohome &&
+git remote set-url --add --push all https://gitlab.com/beaucafe/project_esbohome.git
 
     # Replace BRANCH with the name of the branch you want to push.
 code:    
-    git push all master
+    git push all master -f
 
 Pull from multiple remotes
 
