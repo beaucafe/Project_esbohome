@@ -4,7 +4,7 @@ Adding multiple remotes
 git remote add REMOTE-ID REMOTE-URL
 
 git remote add azura https://tharasupr@dev.azure.com/tharasupr/Project_esbohome/_git/Project_esbohome &&
-git remote add gitlab git@gitlab.com:beaucafe/project_esbohome.git
+git remote add gitlab https://gitlab.com/beaucafe/project_esbohome.git
 
 Remove a remote
     # The syntax is: git remote remove REMOTE-ID
