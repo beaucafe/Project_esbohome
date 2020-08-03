@@ -9,3 +9,7 @@ noted.txt
 
 # production server output
 dist
+
+#develop  featrue/frontent
+*.hotfix
+*.devNote
