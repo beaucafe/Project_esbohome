@@ -1,0 +1,20 @@
+{
+  "name": "project_esbohome",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beaucafe/Project_esbohome.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/beaucafe/Project_esbohome/issues"
+  },
+  "homepage": "https://github.com/beaucafe/Project_esbohome#readme"
+}
