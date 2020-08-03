@@ -1,0 +1,9 @@
+- master ← เป็น main branch ของ Project esbohome
+- release
+- hotfix
+
+- develop  แบ่ง feature
+    - feature
+        - frontend
+        - backend
+- hotfix
