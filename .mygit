@@ -1,0 +1,65 @@
+Adding multiple remotes
+
+# Syntax to add a git remote
+git remote add REMOTE-ID REMOTE-URL
+
+git remote add azura https://tharasupr@dev.azure.com/tharasupr/Project_esbohome/_git/Project_esbohome
+git remote add gitlab https://gitlab.com/beaucafe/project_esbohome.git
+
+Remove a remote
+    # The syntax is: git remote remove REMOTE-ID
+code:    
+    git remote remove github
+
+Push to multiple remotes
+    # Create a new remote called "all" with the URL of the primary repo.
+code:    
+    git remote add all https://github.com/beaucafe/Project_esbohome.git
+
+    # Re-register the remote as a push URL.
+code:
+    git remote set-url --add --push all https://github.com/beaucafe/Project_esbohome.git
+
+    # Add a push URL to a remote. This means that "git push" will also push to this git URL.
+code:    
+    git remote set-url --add --push all https://tharasupr@dev.azure.com/tharasupr/Project_esbohome/_git/Project_esbohome
+
+    git remote set-url --add --push all https://gitlab.com/beaucafe/project_esbohome.git
+
+    # Replace BRANCH with the name of the branch you want to push.
+code:    
+    git push all master
+
+Pull from multiple remotes
+
+    It is not possible to git pull from multiple repos. However, you can git fetch from multiple repos with the following command:
+code:
+    git fetch --all
+
+ISSUE 1
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'https://github.com/beaucafe/MasterProjects.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+after git pull --all  or git pull
+
+ISSUE 2
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'https://github.com/beaucafe/MasterProjects.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+Isolution
+git push all master -f  , it's me worked.
+
+
+
+
+[Ref] : https://jigarius.com/blog/multiple-git-remote-repositories
+
