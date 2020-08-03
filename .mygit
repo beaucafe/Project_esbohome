@@ -3,8 +3,8 @@ Adding multiple remotes
 # Syntax to add a git remote
 git remote add REMOTE-ID REMOTE-URL
 
-git remote add azura https://tharasupr@dev.azure.com/tharasupr/Project_esbohome/_git/Project_esbohome
-git remote add gitlab https://gitlab.com/beaucafe/project_esbohome.git
+git remote add azura https://tharasupr@dev.azure.com/tharasupr/Project_esbohome/_git/Project_esbohome &&
+git remote add gitlab git@gitlab.com:beaucafe/project_esbohome.git
 
 Remove a remote
     # The syntax is: git remote remove REMOTE-ID
@@ -22,9 +22,8 @@ code:
 
     # Add a push URL to a remote. This means that "git push" will also push to this git URL.
 code:    
-    git remote set-url --add --push all https://tharasupr@dev.azure.com/tharasupr/Project_esbohome/_git/Project_esbohome
-
-    git remote set-url --add --push all https://gitlab.com/beaucafe/project_esbohome.git
+    git remote set-url --add --push all https://tharasupr@dev.azure.com/tharasupr/Project_esbohome/_git/Project_esbohome &&
+    git remote set-url --add --push all git@gitlab.com:beaucafe/project_esbohome.git
 
     # Replace BRANCH with the name of the branch you want to push.
 code:    
