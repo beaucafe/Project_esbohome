@@ -38,9 +38,10 @@ export class DataDaily {
     const strDate = new StringDate()
     const { day, month, year } = strDate
     const FirstOfMonth = Number(day) - Number(day) + 1
+    console.log(setTime)
 
     const mStartDate =
-      !setTime === undefined
+      setTime !== undefined
         ? {
             day: setTime.start.day,
             month: setTime.start.month,
@@ -48,10 +49,10 @@ export class DataDaily {
           }
         : { day: strDate.day, month: strDate.month, year: strDate.year }
 
-    // console.log(mStartDate)
+    console.log(mStartDate)
 
     const mStopDate =
-      !setTime === undefined
+      setTime !== undefined
         ? {
             day: setTime.stop.day,
             month: setTime.stop.month,
@@ -59,7 +60,7 @@ export class DataDaily {
           }
         : { day: strDate.day, month: strDate.month, year: strDate.year }
 
-    // console.log(mStopDate)
+    console.log(mStopDate)
 
     const result: IRESPONSE[] = []
 
@@ -67,6 +68,9 @@ export class DataDaily {
 
     try {
       let setIndex = 0
+
+      if (mStartDate.month !== mStopDate.month)
+        throw new Error('Month error: ข้อมูลต้องเป็นเดือนเดียวกัน!')
 
       for (let i = Number(mStartDate.day); i <= Number(mStopDate.day); i++) {
         // setTimeout(() => {

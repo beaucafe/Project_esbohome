@@ -96,8 +96,8 @@ export class DataController {
 
       if (!posname.start && !posname.stop) return this.service.dailyTest(name)
 
-      const { start, stop } = posname
-      const stime = { start, stop }
+      // const { start, stop } = posname
+      const stime = { start: posname.start, stop: posname.stop }
 
       return this.service.dailyTest(name, stime)
     } catch (error) {
