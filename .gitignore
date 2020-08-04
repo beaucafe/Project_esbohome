@@ -41,3 +41,7 @@ lerna-debug.log*
 
 # Setup.Md  note 
 Setup.md
+.devNote
+.gitcommand
+.gitignore
+.gitflow
