@@ -8,6 +8,7 @@ import {
   POS3Config,
   POS4Config,
   defaultConfig,
+  esboConfig,
 } from 'src/config/db.config'
 
 @Injectable()
@@ -34,6 +35,9 @@ export default class PoolService {
       case 'pos4':
         return { config: POS4Config(), poolname: 'POS4' }
         break
+        case 'esbohome':
+          return { config: esboConfig(), poolname: 'ESBOHome' }
+          break        
       case 'default':
         return { config: defaultConfig(), poolname: 'Default' }
         break

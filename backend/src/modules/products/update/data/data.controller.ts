@@ -41,28 +41,8 @@ export class DataController {
   }
 
   @Post('/test')
-  dailyTest(@Body() posname: SETTINGPOSDto) {
-    const { name } = posname
-    try {
-      if (!posname.start && posname.stop)
-        throw new Error(
-          'Error start, กำหนดเวลาเริ่มต้นไม่ถูกต้อง, หรือปล่อยว่างไว้!',
-        )
-
-      if (posname.start && !posname.stop)
-        throw new Error(
-          'Error stop, กำหนดเวลาสิ้นสุดไม่ถูกต้อง, หรือปล่อยว่างไว้!',
-        )
-
-      if (!posname.start && !posname.stop) return this.service.dailyTest(name)
-
-      const { start, stop } = posname
-      const stime = { start, stop }
-
-      return this.service.dailyTest(name, stime)
-    } catch (error) {
-      return new ServiceUnavailableException(error.message)
-    }
+  dailyTest(@Body() posname: PosnameDto) {
+    return this.service.checkBplusofficePosHaveUpdated(posname)
   }
 
   @Post('/add/poscontrol')
@@ -111,18 +91,18 @@ export class DataController {
   //   return this.service.updatePosdataByPos(posname)
   // }
 
-  @Post('/update/v2/posbypos')
-  @UsePipes(ValidationPipe)
-  updatePosdataByPosNameV2(@Body() posname: PosnameDto) {
-    const { name } = posname
-    // console.log(`\nrequest : { name : ${name} }`)
+  // @Post('/update/v2/posbypos')
+  // @UsePipes(ValidationPipe)
+  // updatePosdataByPosNameV2(@Body() posname: PosnameDto) {
+  //   const { name } = posname
+  //   // console.log(`\nrequest : { name : ${name} }`)
 
-    return this.service.updatePosdataByPosV2(posname)
-  }
+  //   return this.service.updatePosdataByPosV2(posname)
+  // }
 
   //  month
-  @Post('/month/test')
-  testMonth(@Body() posname: PosnameDto): Promise<ISummaryByPOS> {
-    return this.service.getSummaryMonth(posname)
-  }
+  // @Post('/month/test')
+  // testMonth(@Body() posname: PosnameDto): Promise<ISummaryByPOS> {
+  //   return this.service.getSummaryMonth(posname)
+  // }
 }

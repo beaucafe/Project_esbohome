@@ -161,95 +161,6 @@ const PaymentTypeSchema = new mongoose.Schema(
 )
 //#endregion
 
-//#region Posdata
-// ปรับปรุงใหม่ 20/7/2020
-//  23/7/2020  ปรับปรุง  DailyRunning  โดยเพิ่ม ข้อสรุปการขายรายวัน
-//  28/7/2020  ยกเลิก เนื่องจากมีปัญหาการเก็บข้อมูลที่ใหญ่กว่า 16MBytes / Bson
-const POSDataxSchema = new mongoose.Schema(
-  {
-    MonthlyRunning: String, //yearMonth  , 202007
-    POINTOFSALE: [
-      {
-        _id: false,
-        POSID: { type: Number, unique: true, ref: 'Poscontroller' }, //PSH_POS
-        POSName: { type: String, unique: true },
-        mSalesTotal: Number,
-        mSalesPreTaxTotal: Number,
-        mSalesTaxAmountTotal: Number,
-        mBill_salesTotal: Number,
-        mBill_memberTotal: Number,
-        mBill_cancelTotal: Number,
-        DailyRunning: [
-          {
-            _id: String, // tablePosName by dailay
-            DateAt: String, // รายวัน  yymmdd
-            salesTaxTotal: Number,
-            salesPreTax: Number,
-            taxAmount: Number,
-            billSalesTotal: Number,
-            billMembers: Number,
-            billCancel: Number,
-            POSDetails: [
-              {
-                // _id: String,
-                _id: Number, // PSH_KEY  = billID
-                billPos: Number, // PSH_POS
-                billType: Number, // PSH_TYPE
-                billStatus: Number, // PSH_STATUS
-                billNo: String, //  เลขที่เอกสาร PSH_NO  => Table D check this's here PSD_PSH = PSH_KEY
-                billDeatil: [
-                  {
-                    _id: Number, // PSD_KEY
-                    status: Number, // PSD_STATUS
-                    billID_ref: Number, // PSD_PSH = PSH_KEY
-                    sKey: { type: Number, ref: 'Skumasters' }, // PSD_SKU
-                    gKey: String, // PSD_GOODs
-                    barcode: String, // PSD_Keyin
-                    product_name: String, // SKU_NAME
-                    weight: Number, // PSD_WEIGHT
-                    amountSold: Number, // จำนวนที่ขาย PSD_QTY
-                    unit_count: Number, // Unit of counting, UTQQTY, PSD_UTQQTY จำนวนนับ
-                    unit_name: String,
-                    normal_price: { type: Number },
-                    spacial_price: { type: Number },
-                    discount: { type: Number },
-                    selling_price: Number,
-                  },
-                ],
-                billDate: Date,
-                billStart: Date,
-                billStopt: Date,
-                billCashier: String,
-                billMbcode: String,
-                billMbcard: String,
-                billMbRdm: Number,
-                billMbpoint: Number,
-                billMbbirth: Number,
-                billSlmcode: String, // sale man code
-                billCharge: Number,
-                billSV: Number,
-                billNV: Number,
-                billVat: Number,
-                billQty: Number, // จำนวนรายการ
-                billItems: Number, // จำนวน สินค้า
-                billTaxInv: String, // invoice
-                billCntInv: Number, // invoice count
-                billAddbook: Number, // customer addbook
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    timestamps: true,
-    versionKey: false,
-    collection: 'POSDatax',
-  },
-)
-//#endregion
-
 const PosdataSchema = new Schema(
   {
     Monthly: { type: String, unique: true, trim: true },
@@ -350,7 +261,6 @@ const PosdataRunningSchema = new Schema(
 export {
   PoscontrollerSchema,
   PaymentTypeSchema,
-  POSDataxSchema,
   PosData001Schema,
   PosData002Schema,
   PosData003Schema,

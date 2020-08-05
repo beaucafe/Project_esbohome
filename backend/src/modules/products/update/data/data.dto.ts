@@ -26,3 +26,12 @@ export class SETTINGPOSDto {
 
   stop?: IYYMMDD
 }
+
+
+// สำหรับรับการตรวจสอบ input เพื่อเช็คระหว่าง bplus back กับ pos มีการรวบรวมข้อมูลระหว่างวันหรือไม่
+export class OfficeHavePosUpdatedDTO{
+  @IsNotEmpty()
+  @IsString()
+  posname : string
+
+}
