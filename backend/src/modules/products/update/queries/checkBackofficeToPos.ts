@@ -1,5 +1,11 @@
 import { IYYMMDD } from "src/models/pos/posdata.interface"
 
+interface IOFFICETOPOS {
+    tablename : string
+    date:string
+    posID : number
+}
+
 const checkBackofficeToPos = (tablename: string, date: string, posID:number ) =>{
     let defaultTable = tablename
     return `SELECT TOP 1 PSH_KEY ,PSH_POS ,PSH_SESSION,PSH_TYPE
