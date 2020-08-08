@@ -85,7 +85,7 @@ export class DataMonthly implements IdataMonthly {
 
         data.forEach((e) => {
             const { POINTOFSALE, dailyRunning } = e.POSData
-            console.log(dailyRunning)
+            // console.log(dailyRunning)
 
             result.sum_Total += POINTOFSALE.salesTaxTotal
             result.sum_billTotal += POINTOFSALE.billSalesTotal
@@ -106,7 +106,7 @@ export class DataMonthly implements IdataMonthly {
 
     private _getByPos(option?: IOption): Promise<any> {
         try {
-            console.log(option)
+            // console.log(option)
 
             let posName = !option.posname ? null : option.posname
 
@@ -156,6 +156,8 @@ export class DataMonthly implements IdataMonthly {
             )
             // console.log(`lastDateofMonth : ${lastDateofMonth}`)
             if (option.thisMonth instanceof Object) {
+                // console.log("month : object")
+
                 lastDateofMonth = new StringDate().todateYMD(
                     new Date(option.thisMonth.year, option.thisMonth.month, 0),
                     "yymmdd",
@@ -163,7 +165,7 @@ export class DataMonthly implements IdataMonthly {
             }
 
             const currentDay = fristDateofMonth
-            // console.log(currentDay)
+            // console.log(lastDateofMonth)
 
             const currentMonth =
                 cMonth === "all"
@@ -178,10 +180,11 @@ export class DataMonthly implements IdataMonthly {
 
             const posID =
                 posName === "all" ? null : this._posdate.PosID(posName)
+            // console.log("currentDay : " + currentDay)
 
             const match =
                 posName === "all"
-                    ? currentDay !== "all"
+                    ? cDay !== "all"
                         ? { "POSData.dailyRunning": { $eq: currentDay } }
                         : {
                               "POSData.dailyRunning": {
@@ -189,11 +192,20 @@ export class DataMonthly implements IdataMonthly {
                                   $lte: lastDateofMonth,
                               },
                           }
-                    : {
+                    : cDay !== "all"
+                    ? {
                           "POSData.POINTOFSALE.POSID": { $eq: posID },
                           "POSData.dailyRunning": { $eq: currentDay },
                       }
-            console.log(match)
+                    : {
+                          "POSData.POINTOFSALE.POSID": { $eq: posID },
+                          "POSData.dailyRunning": {
+                              $gte: fristDateofMonth,
+                              $lte: lastDateofMonth,
+                          },
+                      }
+
+            // console.log(match)
 
             const mongodb = this.posdataModel.aggregate([
                 { $match: { Monthly: currentMonth } },

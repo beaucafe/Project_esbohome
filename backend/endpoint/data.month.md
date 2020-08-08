@@ -44,3 +44,17 @@ out =>  all pos , all day in month selected.
 ```bash
 out =>  all pos , all day in current month
 ```
+
+
+### option 3
+```JSON
+{
+    "posname": "pos1",
+    "day" : "all",
+    "thisMonth" : "all"
+}
+```
+
+```bash
+out =>  some pos , all day in current month
+```
