@@ -152,3 +152,46 @@
 //     }
 //   }
 //   //#endregion
+
+// 5/8/63
+// dataCheckDailyRunning = async (posID) => {
+//     try {
+//       const mongodb = await this.dataModel.aggregate([
+//         { $match: { MonthlyRunning: '202007' } },
+//         { $unwind: { path: '$POINTOFSALE' } },
+//         {
+//           $match: {
+//             'POINTOFSALE.POSID': { $eq: posID },
+//           },
+//         },
+//         { $unwind: '$POINTOFSALE.DailyRunning' },
+
+//         {
+//           $project: {
+//             MonthlyRunning: 0,
+//             'POINTOFSALE.DailyRunning': {
+//               POSDetails: 0,
+//             },
+//             _id: 0,
+//             createdAt: 0,
+//             updatedAt: 0,
+//           },
+//         },
+//       ])
+
+//       //   for(let i=0;i< mongodb.length; i++)
+//       if (!mongodb || !mongodb[0])
+//         throw new Error(`dataCheckDailyRunning : ไม่พบข้อมูล!`)
+
+//       const datarunning = mongodb.map((data) => {
+//         const { POSID, DailyRunning } = data.POINTOFSALE
+//         const { _id, DateAt } = DailyRunning
+
+//         return { Tablename: _id, DateAt }
+//       })
+
+//       return datarunning
+//     } catch (error) {
+//       return error.message
+//     }
+//   }

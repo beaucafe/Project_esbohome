@@ -10,7 +10,7 @@ import { defaultResponse } from 'src/types/pos/default.response'
 import { changeStatus } from 'src/utilities/change.status'
 import { defaultConfig, POS1Config } from 'src/config/db.config'
 import * as dbs from 'src/utilities/pos/string.query'
-import { store } from 'src/shared/reducer/storage'
+// import { store } from 'src/shared/reducer/storage'
 
 @Injectable()
 export class UpdateRepository {

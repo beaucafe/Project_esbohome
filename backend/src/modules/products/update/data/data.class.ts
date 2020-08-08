@@ -1,11 +1,9 @@
 import {
-  IPOSDatax,
   IPOSDetails,
   ITablename,
   IPOSDATA,
   IPOSDATARUNNING,
   IPOS,
-  IoptionYMD,
 } from 'src/models/pos/posdata.interface'
 import { IYYMMDD } from 'src/libs/datetostring/date.type'
 import { PosNumber, IRESPONSE } from 'src/types/pos/pos.type'
@@ -13,8 +11,11 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Injectable, ServiceUnavailableException } from '@nestjs/common'
 import PoolService from 'src/utilities/mssql/pool.service'
-import * as strquery from './data.querystring'
-import { StringDate } from 'src/libs/datetostring/date.class'
+// import * as strquery from './data.querystring'
+import { StringDate } from 'src/libs/datetostring/'
+// import { POSDetails } from '../queries/posdetail'
+// import { BillDetail } from '../queries/billdetail'
+import * as strquery from '../queries'
 
 export class dataClass {
   private _yymmdd: IYYMMDD = {
@@ -109,47 +110,6 @@ export class dataClass {
   //#endregion
 
   // TODO database posdate
-  dataCheckDailyRunning = async (posID) => {
-    try {
-      const mongodb = await this.dataModel.aggregate([
-        { $match: { MonthlyRunning: '202007' } },
-        { $unwind: { path: '$POINTOFSALE' } },
-        {
-          $match: {
-            'POINTOFSALE.POSID': { $eq: posID },
-          },
-        },
-        { $unwind: '$POINTOFSALE.DailyRunning' },
-
-        {
-          $project: {
-            MonthlyRunning: 0,
-            'POINTOFSALE.DailyRunning': {
-              POSDetails: 0,
-            },
-            _id: 0,
-            createdAt: 0,
-            updatedAt: 0,
-          },
-        },
-      ])
-
-      //   for(let i=0;i< mongodb.length; i++)
-      if (!mongodb || !mongodb[0])
-        throw new Error(`dataCheckDailyRunning : ไม่พบข้อมูล!`)
-
-      const datarunning = mongodb.map((data) => {
-        const { POSID, DailyRunning } = data.POINTOFSALE
-        const { _id, DateAt } = DailyRunning
-
-        return { Tablename: _id, DateAt }
-      })
-
-      return datarunning
-    } catch (error) {
-      return error.message
-    }
-  }
 
   // TODO end
 
@@ -384,7 +344,7 @@ export class dataClass {
 
           let dif = 0
           for (let i = 0; i < POINTOFSALE.length; i++) {
-            const { POSDetails, POSID } = POINTOFSALE[i]
+            const {  POSDetails, POSID } = POINTOFSALE[i]
             dif = Number(cntDetails) - Number(POSDetails.length)
             if (POSID === dataRunning.POSID && POSDetails.length < cntDetails) {
               POINTOFSALE[i] = dataRunning
@@ -405,6 +365,20 @@ export class dataClass {
                   return { status: 404, message: error.message }
                 })
               break
+            }else{
+              const checkRunning = monthlydb.dailyRunning
+              const {_id, dailyRunning} = posdataDB
+              let found = checkRunning.filter(
+                (data) => data.date === dailyRunning,
+              )
+              if (!found[0] || found.length < 1) {
+                checkRunning.push({
+                  _id: _id,
+                  date: dailyRunning,
+                })
+                result.message = result.message + ` and New [Monthly] Created.`
+                monthlydb.save()
+              }
             }
           }
         }
@@ -539,7 +513,6 @@ export class dataClass {
   // TODO end
 
   constructor(
-    @InjectModel('Posdatax') private dataModel: Model<IPOSDatax>,
     @InjectModel('Posdata') private posdataModel: Model<IPOSDATA>,
     @InjectModel('Posdatarunning') private dailyModel: Model<IPOSDATARUNNING>,
   ) {}

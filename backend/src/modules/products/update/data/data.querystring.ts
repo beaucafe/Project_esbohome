@@ -10,12 +10,6 @@ let dailyRunning = `${year}${month
   .toString()
   .padStart(2, '0')}${day.toString().padStart(2, '0')}`
 
-const dailyTablePos = `SELECT  TOP 1
-        POSC_FM_DATE as Datetime ,POSC_TABLE as Tablename
-        FROM POSCONTROL 
-        where POSC_FM_DATE= '${year}-${month}-${day}'
-        order by posc_key desc`
-
 const strDepartment = `SELECT [ICDEPT_KEY] as id
 ,ICDEPT_CODE as dept_code
 ,ICDEPT_THAIDESC as dept_thaidesc
@@ -140,15 +134,5 @@ order by psd_key asc`
   return string
 }
 
-export {
-  strPosconfig,
-  strDepartment,
-  strPoscontrol,
-  paymentType,
-  dailyTablePos,
-  POSDetails, // table H
-  // BillDetail,
-  BillDetail,
-  monthlyRunning,
-  dailyRunning,
-}
+
+

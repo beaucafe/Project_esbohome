@@ -7,7 +7,6 @@ import { PosNumber, IRESPONSE } from 'src/types/pos/pos.type'
 import {
   IPoscontrol,
   IPaymentType,
-  IPOSDatax,
   IPOSDetails,
   IPOSDATA,
   IPOSDATARUNNING,
@@ -16,7 +15,9 @@ import {
 import { IYYMMDD, ISETTIME } from 'src/libs/datetostring/date.type'
 import { dataClass } from './data.class'
 import * as strqry from './data.querystring'
-import { StringDate } from 'src/libs/datetostring/date.class'
+import { StringDate } from 'src/libs/datetostring/'
+import * as office from 'src/libs/bplusbackoffice'
+import { officePostable } from 'src/libs/bplusbackoffice'
 
 @Injectable()
 export class DataDaily {
@@ -24,7 +25,6 @@ export class DataDaily {
   constructor(
     @InjectModel('Poscontroller') private poscontrolModel: Model<IPoscontrol>,
     @InjectModel('PaymentType') private paymentTypeModel: Model<IPaymentType>,
-    @InjectModel('Posdatax') private posdataxModel: Model<IPOSDatax>,
     @InjectModel('Posdata') private posdataModel: Model<IPOSDATA>,
     @InjectModel('Posdatarunning') private runningModel: Model<IPOSDATARUNNING>,
 
@@ -95,14 +95,31 @@ export class DataDaily {
     }
   }
 
-  async test() {
+  async checkBplusofficePosHaveUpdated(posname) {
     try {
-      return { message: 'test' }
+      const posID = this._posdate.PosID(posname)
+      const connect = new PoolService('esbohome')
+      const input = {connect, posID}
+      return { data : await officePostable(input) }
     } catch (error) {
       throw new ServiceUnavailableException(error.message)
     }
   }
 
+  async test() {
+    try {
+      const connect = new PoolService('esbohome')
+      const input = {connect, posID:1, getData:true}
+      const test = await officePostable(input)
+
+      
+      return { message: test }
+    } catch (error) {
+      throw new ServiceUnavailableException(error.message)
+    }
+  }
+
+  //#region  ไม่ได้ใช้งานแล้ว  แต่เก็บไว้ดูเรื่อง  aggregate ของ mongoose
   async PosdataByPosName_Daily_V2(PosName) {
     // ok ,  select by pos
     //PosdataByPosName_Daily version 2
@@ -118,7 +135,7 @@ export class DataDaily {
       // bug#1 , first time create collection
       // bug#2 , การ delay ของข้อมูลเนื่องจากเรียก Async function
       // Edit ,  โดยการแจ้ง function PosdataByPosName_Daily_V1 ออกไปก่อน
-      const mongodb = await this.posdataxModel.aggregate([
+      const mongodb = await this.posdataModel.aggregate([
         { $match: { MonthlyRunning: getMonthly } },
         { $unwind: { path: '$POINTOFSALE' } },
         {
@@ -189,4 +206,5 @@ export class DataDaily {
       throw new ServiceUnavailableException(error.message)
     }
   }
+  //#endregion
 }

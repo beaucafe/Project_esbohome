@@ -1,5 +1,5 @@
 import { IYYMMDD } from 'src/libs/datetostring/date.type'
-export class StringDate {
+export default class StringDate {
   private _years: number | string
   public get year(): number | string {
     return this._years

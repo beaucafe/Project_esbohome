@@ -5,7 +5,6 @@ import { MongooseModule } from '@nestjs/mongoose'
 import {
   PoscontrollerSchema,
   PaymentTypeSchema,
-  POSDataxSchema,
   PosdataSchema,
   PosdataRunningSchema,
 } from 'src/models/pos/posdata.schema'
@@ -19,12 +18,11 @@ import { dataClass } from './data.class'
     MongooseModule.forFeature([
       { name: 'Poscontroller', schema: PoscontrollerSchema },
       { name: 'PaymentType', schema: PaymentTypeSchema },
-      { name: 'Posdatax', schema: POSDataxSchema },
       { name: 'Posdata', schema: PosdataSchema },
       { name: 'Posdatarunning', schema: PosdataRunningSchema },
     ]),
   ],
   controllers: [DataController],
-  providers: [DataService, DataRepository, DataMonthly, DataDaily, dataClass],
+  providers: [DataService, DataRepository, DataDaily, dataClass, DataMonthly],
 })
 export class DataModule {}
