@@ -166,7 +166,7 @@ const PosdataSchema = new Schema(
     Monthly: { type: String, unique: true, trim: true },
     dailyRunning: [
       {
-        _id: { type: Schema.Types.ObjectId, ref: 'PosdataRunning' },
+        _id: { type: Schema.Types.ObjectId, ref: 'Posdatarunning' },
         date: String,
       },
     ],

@@ -6,6 +6,7 @@ import { defaultResponse } from 'src/types/pos/default.response'
 import { ISummaryByPOS } from 'src/models/pos/posdata.interface'
 import { DataDaily } from './data.daily'
 import { ISETTIME } from 'src/libs/datetostring/date.type'
+import { DataMonthly } from './data.month'
 
 interface IPosname {
   name: string
@@ -16,7 +17,7 @@ export class DataService {
   private result = new defaultResponse()
   constructor(
     private db: DataRepository,
-    // private month: DataMonthly,
+    private month: DataMonthly,
     private daily: DataDaily,
   ) {}
   Hello = () => 'Update data!!!.'
@@ -26,9 +27,15 @@ export class DataService {
   // }
 
   test() {
-    return this.daily.test()
+    return this.month.getAll()
     // return this.month.gettblPosName('possss1')
   }
+
+  monthbypos() {
+    return this.month.getAll()
+    // return this.month.gettblPosName('possss1')
+  }
+
   checkBplusofficePosHaveUpdated(posname){
     const { name } = posname
     return this.daily.checkBplusofficePosHaveUpdated(name)

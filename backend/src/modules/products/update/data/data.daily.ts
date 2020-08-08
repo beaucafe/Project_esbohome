@@ -99,8 +99,8 @@ export class DataDaily {
     try {
       const posID = this._posdate.PosID(posname)
       const connect = new PoolService('esbohome')
-     
-      return { data : await officePostable(connect, posID) }
+      const input = {connect, posID}
+      return { data : await officePostable(input) }
     } catch (error) {
       throw new ServiceUnavailableException(error.message)
     }
@@ -109,7 +109,8 @@ export class DataDaily {
   async test() {
     try {
       const connect = new PoolService('esbohome')
-      const test = await officePostable(connect, 1, true)
+      const input = {connect, posID:1, getData:true}
+      const test = await officePostable(input)
 
       
       return { message: test }

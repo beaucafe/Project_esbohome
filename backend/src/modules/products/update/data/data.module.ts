@@ -9,7 +9,7 @@ import {
   PosdataRunningSchema,
 } from 'src/models/pos/posdata.schema'
 import { DataRepository } from './data.repository'
-// import { DataMonthly } from './data.month'
+import { DataMonthly } from './data.month'
 import { DataDaily } from './data.daily'
 import { dataClass } from './data.class'
 
@@ -23,6 +23,6 @@ import { dataClass } from './data.class'
     ]),
   ],
   controllers: [DataController],
-  providers: [DataService, DataRepository, DataDaily, dataClass],
+  providers: [DataService, DataRepository, DataDaily, dataClass, DataMonthly],
 })
 export class DataModule {}

@@ -344,7 +344,7 @@ export class dataClass {
 
           let dif = 0
           for (let i = 0; i < POINTOFSALE.length; i++) {
-            const { POSDetails, POSID } = POINTOFSALE[i]
+            const {  POSDetails, POSID } = POINTOFSALE[i]
             dif = Number(cntDetails) - Number(POSDetails.length)
             if (POSID === dataRunning.POSID && POSDetails.length < cntDetails) {
               POINTOFSALE[i] = dataRunning
@@ -365,6 +365,20 @@ export class dataClass {
                   return { status: 404, message: error.message }
                 })
               break
+            }else{
+              const checkRunning = monthlydb.dailyRunning
+              const {_id, dailyRunning} = posdataDB
+              let found = checkRunning.filter(
+                (data) => data.date === dailyRunning,
+              )
+              if (!found[0] || found.length < 1) {
+                checkRunning.push({
+                  _id: _id,
+                  date: dailyRunning,
+                })
+                result.message = result.message + ` and New [Monthly] Created.`
+                monthlydb.save()
+              }
             }
           }
         }

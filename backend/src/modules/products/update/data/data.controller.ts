@@ -45,6 +45,11 @@ export class DataController {
     return this.service.checkBplusofficePosHaveUpdated(posname)
   }
 
+  @Post('/MonthByPos')
+  getMonthByPos(@Body() posname: PosnameDto) {
+    return this.service.monthbypos()
+  }
+
   @Post('/add/poscontrol')
   @UsePipes(ValidationPipe)
   addPoscontrol(@Body() posname: PosnameDto) {
