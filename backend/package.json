@@ -36,7 +36,7 @@
         "bcryptjs": "^2.4.3",
         "change-case": "^4.1.1",
         "class-transformer": "^0.2.3",
-        "class-validator": "^0.12.2",
+        "class-validator": "^0.14.0",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
         "g": "^2.0.1",
